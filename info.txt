@@ -1,0 +1,30 @@
+//springBoot application : 8080 (e2cb9a8e-1771-4a83-ad2c-75631215debd)
+    //springBoot application : 9090
+    //custom server : 1212
+
+    //PORT MAPPER : 1000
+    //id=e2cb9a8e-1771-4a83-ad2c-75631215debd : 8080;
+    //id=e2cb9a8e-1771-4a83-ad2c-75631215debd : 9090;
+    //...
+    //client (id  = e2cb9a8e-1771-4a83-ad2c-75631215debd)
+//    String[] array = {"uuid1","uuid2"};
+//
+//    int i = new Random().nextInt(2);
+//    String uuid = array[i];
+//
+//    HashMap<String, Integer> objectObjectHashMap = new HashMap<>();
+//        objectObjectHashMap.put("e2cb9a8e-1771-4a83-ad2c-75631215debd",8080);
+//
+//    Integer port = objectObjectHashMap.get(uuid);
+//
+//
+//
+//
+//    String s = UUID.randomUUID().toString();
+//        System.out.println(s);
+
+    //1. springBoot welcome page (port 8080, uuid ?)
+    //1.1 server with file system info;
+    //2. portMapper port 1000 (map of port 8080 and uuid ?)
+    //3. client (connect to portMapper using uuid and port 1000) -> portMapper -> welcomePage in String
+    //4. Client Admin (uuid {json login password; query (currClients)}) -> portMapper -> terminal;
