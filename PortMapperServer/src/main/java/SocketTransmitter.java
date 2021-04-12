@@ -1,26 +1,31 @@
 import org.apache.log4j.Logger;
-import read.ReadClientThread;
-import write.WriteClientThread;
+import request.RequestThread;
+import service.impl.SocketServiceImpl;
+import response.ResponseThread;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
+import java.util.UUID;
 
 public class SocketTransmitter extends Thread {
 
     private static final Logger log = Logger.getLogger(SocketTransmitter.class);
 
-    public ServerSocket serverSocket;
-    public Socket toClient;
-    public int listeningPort;
+    private SocketServiceImpl socketService;
+    private ServerSocket serverSocket;
+    private Socket toClient;
+    private Socket toTargetServer;
+    private int listeningPort;
 
     public SocketTransmitter() {
         getProperties();
         //setDaemon(true);
         try {
             serverSocket = new ServerSocket(listeningPort, 10, InetAddress.getByName("localhost"));
+            socketService = new SocketServiceImpl();
             start();
         } catch (IOException t) {
             t.printStackTrace();
@@ -34,7 +39,7 @@ public class SocketTransmitter extends Thread {
             properties.load(fis);
             listeningPort = Integer.parseInt(properties.getProperty("listen.port"));
         } catch (IOException e) {
-            log.error("ОШИБКА:Файл свойств не найден или поврежден.");
+            log.error("ERROR: Property file not found or corrupted.");
             throw new RuntimeException();
         }
     }
@@ -44,17 +49,25 @@ public class SocketTransmitter extends Thread {
         System.out.println("Server listening: " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
 
         try {
-            System.out.println("Waiting for connect...");
-            toClient = serverSocket.accept();
-            System.out.println("Connecting...");
+            toClient = socketService.connectionFromClient(serverSocket);
+            String targetServerUUID = socketService.getUUIDFromClient(toClient);
+            Integer targetServerPort = socketService.getPort(UUID.fromString(targetServerUUID));
+            toTargetServer = socketService.connectToTargetServer(targetServerPort);
 
-            ReadClientThread read = new ReadClientThread(toClient);
-            WriteClientThread write = new WriteClientThread(toClient);
+            RequestThread requestThread = new RequestThread(toClient, toTargetServer);
+            ResponseThread responseThread = new ResponseThread(toClient, toTargetServer);
+
+            //todo wrap in a loop with check and exit on request
+            requestThread.requestToTargetServer(requestThread.requestFromClient());
+            responseThread.sentResponseToClient(responseThread.responseFromTargetServer());
+
 
             toClient.close();
+            toTargetServer.close();
             System.out.println("SocketTransmitter work end");
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("FATAL ERROR IN SocketTransmitter Thread");
+            throw new RuntimeException("FATAL ERROR IN SocketTransmitter Thread");
         }
 
     }
