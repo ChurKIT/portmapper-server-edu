@@ -4,6 +4,7 @@ import service.impl.SocketServiceImpl;
 import response.ResponseThread;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -50,16 +51,17 @@ public class SocketTransmitter extends Thread {
 
         try {
             toClient = socketService.connectionFromClient(serverSocket);
-            String targetServerUUID = socketService.getUUIDFromClient(toClient);
+            socketService.getRequest(toClient);
+            String targetServerUUID = socketService.getUUIDFromClient();
             Integer targetServerPort = socketService.getPort(UUID.fromString(targetServerUUID));
             toTargetServer = socketService.connectToTargetServer(targetServerPort);
 
-            RequestThread requestThread = new RequestThread(toClient, toTargetServer);
+            RequestThread requestThread = new RequestThread(socketService);
             ResponseThread responseThread = new ResponseThread(toClient, toTargetServer);
 
             //todo wrap in a loop with check and exit on request
-            requestThread.requestToTargetServer(requestThread.requestFromClient());
-            responseThread.sentResponseToClient(responseThread.responseFromTargetServer());
+            HttpURLConnection connection = requestThread.requestToTargetServer(requestThread.requestFromClient());
+            responseThread.sentResponseToClient(responseThread.responseFromTargetServer(connection));
 
 
             toClient.close();

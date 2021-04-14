@@ -15,6 +15,8 @@ public interface SocketService {
 
     public Socket connectToTargetServer(Integer port);
 
-    public String getUUIDFromClient(Socket toClient) throws IOException;
+    public String getRequestFromClient();
+
+    public String getUUIDFromClient();
 
 }

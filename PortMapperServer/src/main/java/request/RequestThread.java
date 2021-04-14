@@ -1,30 +1,37 @@
 package request;
 
+import service.SocketService;
+
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
 
 public class RequestThread extends Thread{
 
-    private Socket toClient;
-    private Socket toTargetServer;
-    private BufferedReader reader;
-    private BufferedWriter writer;
+    private SocketService service;
 
-    public RequestThread(Socket toClient, Socket toTargetServer) throws IOException {
-        this.toClient = toClient;
-        this.toTargetServer = toTargetServer;
-        reader = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
-        writer = new BufferedWriter(new OutputStreamWriter(toTargetServer.getOutputStream()));
+
+    public RequestThread(SocketService socketService) throws IOException {
+        this.service = socketService;
         start();
     }
 
 
-    public String requestFromClient(){
-        return null;
+    public String requestFromClient() {
+        String request = service.getRequestFromClient();
+        return request;
     }
 
-    public boolean requestToTargetServer(String request){
-        return false;
+    public HttpURLConnection requestToTargetServer(String request) {
+        String url = "http://localhost:8080/" + request;
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) new URL(url).openConnection();
+            return connection;
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 
 

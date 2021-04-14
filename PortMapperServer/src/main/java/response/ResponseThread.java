@@ -1,30 +1,46 @@
 package response;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.Socket;
 
 public class ResponseThread extends Thread {
 
     private Socket toClient;
     private Socket toTargetServer;
-    private BufferedReader reader;
-    private BufferedWriter writer;
 
     public ResponseThread(Socket toClient, Socket toTargetServer) throws IOException {
-        this.toTargetServer = toTargetServer;
         this.toClient = toClient;
-        writer = new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream()));
-        reader = new BufferedReader(new InputStreamReader(toTargetServer.getInputStream()));
+        this.toTargetServer = toTargetServer;
         start();
     }
 
 
-    public String responseFromTargetServer(){
-        return null;
+    public String responseFromTargetServer(HttpURLConnection connection){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null){
+                response.append(line);
+            }
+            reader.close();
+            return response.toString();
+        } catch (IOException e){
+            throw new RuntimeException("ERROR: Couldn't get a response from the target server" + toTargetServer.getInetAddress() + ":" + toTargetServer.getPort());
+        }
     }
 
     public boolean sentResponseToClient(String response){
-        return false;
+        try {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream()));
+            writer.write(response);
+            writer.flush();
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            throw new RuntimeException("ERROR: Couldn't send response to client");
+        }
     }
 
     @Override

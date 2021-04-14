@@ -1,6 +1,6 @@
 import java.util.UUID;
 
-public class Main {
+public class PortMapperRun {
 
     public static void main(String[] args) {
             SocketTransmitter socketTransmitter = new SocketTransmitter();

@@ -4,8 +4,10 @@ public interface ConnectService {
 
     public boolean connect();
 
-    public boolean mapTo(String uuid);
+    public boolean mapTo();
 
-    public void query(String query);
+    public void query();
+
+    public String readResponse();
 
 }

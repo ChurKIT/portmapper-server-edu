@@ -1,3 +1,9 @@
 2021-04-10 15:28:56 ERROR SocketTransmitter:35 - ОШИБКА:Файл свойств не найден или поврежден.
 2021-04-10 15:35:44 ERROR SocketTransmitter:35 - ОШИБКА:Файл свойств не найден или поврежден.
 2021-04-10 15:36:21 ERROR SocketTransmitter:35 - ОШИБКА:Файл свойств не найден или поврежден.
+2021-04-14 19:59:42 ERROR SocketServiceImpl:53 - ERROR: Can't connect to target server on port 4565
+2021-04-14 20:07:52 ERROR SocketServiceImpl:53 - ERROR: Can't connect to target server on port 4565
+2021-04-14 20:11:03 ERROR SocketServiceImpl:53 - ERROR: Can't connect to target server on port 4565
+2021-04-14 20:51:11 ERROR SocketServiceImpl:64 - ERROR: Invalid UUID
+2021-04-14 21:03:35 ERROR SocketServiceImpl:64 - ERROR: Invalid UUID
+2021-04-14 21:05:29 ERROR SocketServiceImpl:65 - ERROR: Invalid UUID
