@@ -14,12 +14,12 @@ public class ConnectServiceImpl implements ConnectService {
 
 
     @Override
-    public boolean connect() {
+    public synchronized boolean connect() {
         try {
             clientSocket = new Socket("localhost", 6666);
             reader = new BufferedReader(new InputStreamReader(System.in));
             out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())));
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+//            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             return true;
         } catch (IOException e){
             throw new RuntimeException("ERROR: Couldn't to connect to server");
@@ -27,7 +27,7 @@ public class ConnectServiceImpl implements ConnectService {
     }
 
     @Override
-    public boolean mapTo() {
+    public synchronized boolean mapTo() {
         try {
             System.out.println("Write UUID Target Server");
             String uuid = reader.readLine();
@@ -39,21 +39,26 @@ public class ConnectServiceImpl implements ConnectService {
     }
 
     @Override
-    public void query()
+    public synchronized void query()
      {
          try {
              System.out.println("Write query to Target Server");
              String query = reader.readLine();
              out.write(query);
+             out.flush();
+             out.close();
          } catch (IOException e){
              throw new RuntimeException("ERROR: Undefined query");
          }
     }
 
     @Override
-    public String readResponse() {
+    public synchronized String readResponse() {
         try {
+            connect();
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String response = in.readLine();
+            in.close();
             return response;
         } catch (IOException e) {
             throw new RuntimeException("ERROR: Couldn't get response");

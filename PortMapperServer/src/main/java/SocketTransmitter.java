@@ -15,11 +15,11 @@ public class SocketTransmitter extends Thread {
 
     private static final Logger log = Logger.getLogger(SocketTransmitter.class);
 
-    private SocketServiceImpl socketService;
-    private ServerSocket serverSocket;
-    private Socket toClient;
-    private Socket toTargetServer;
-    private int listeningPort;
+    private volatile SocketServiceImpl socketService;
+    private volatile ServerSocket serverSocket;
+    private volatile Socket toClient;
+    private volatile Socket toTargetServer;
+    private volatile int listeningPort;
 
     public SocketTransmitter() {
         getProperties();
@@ -55,6 +55,8 @@ public class SocketTransmitter extends Thread {
             String targetServerUUID = socketService.getUUIDFromClient();
             Integer targetServerPort = socketService.getPort(UUID.fromString(targetServerUUID));
             toTargetServer = socketService.connectToTargetServer(targetServerPort);
+            toClient = socketService.connectionFromClient(serverSocket);
+
 
             RequestThread requestThread = new RequestThread(socketService);
             ResponseThread responseThread = new ResponseThread(toClient, toTargetServer);
@@ -63,9 +65,8 @@ public class SocketTransmitter extends Thread {
             HttpURLConnection connection = requestThread.requestToTargetServer(requestThread.requestFromClient());
             responseThread.sentResponseToClient(responseThread.responseFromTargetServer(connection));
 
-
-            toClient.close();
-            toTargetServer.close();
+            //toClient.close();
+            //toTargetServer.close();
             System.out.println("SocketTransmitter work end");
         } catch (IOException e) {
             log.error("FATAL ERROR IN SocketTransmitter Thread");

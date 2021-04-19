@@ -9,7 +9,7 @@ import java.net.URL;
 
 public class RequestThread extends Thread{
 
-    private SocketService service;
+    private volatile SocketService service;
 
 
     public RequestThread(SocketService socketService) throws IOException {

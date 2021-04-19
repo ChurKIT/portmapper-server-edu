@@ -7,3 +7,4 @@
 2021-04-14 20:51:11 ERROR SocketServiceImpl:64 - ERROR: Invalid UUID
 2021-04-14 21:03:35 ERROR SocketServiceImpl:64 - ERROR: Invalid UUID
 2021-04-14 21:05:29 ERROR SocketServiceImpl:65 - ERROR: Invalid UUID
+2021-04-18 21:26:40 ERROR SocketServiceImpl:55 - ERROR: Can't connect to target server on port 8080

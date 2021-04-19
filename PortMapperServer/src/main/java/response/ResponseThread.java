@@ -6,8 +6,8 @@ import java.net.Socket;
 
 public class ResponseThread extends Thread {
 
-    private Socket toClient;
-    private Socket toTargetServer;
+    private volatile Socket toClient;
+    private volatile Socket toTargetServer;
 
     public ResponseThread(Socket toClient, Socket toTargetServer) throws IOException {
         this.toClient = toClient;
@@ -24,16 +24,15 @@ public class ResponseThread extends Thread {
             while ((line = reader.readLine()) != null){
                 response.append(line);
             }
-            reader.close();
             return response.toString();
         } catch (IOException e){
             throw new RuntimeException("ERROR: Couldn't get a response from the target server" + toTargetServer.getInetAddress() + ":" + toTargetServer.getPort());
         }
     }
 
-    public boolean sentResponseToClient(String response){
+    public synchronized boolean sentResponseToClient(String response){
         try {
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream()));
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream())));
             writer.write(response);
             writer.flush();
             writer.close();

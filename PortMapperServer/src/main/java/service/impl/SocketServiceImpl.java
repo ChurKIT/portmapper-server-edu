@@ -18,7 +18,7 @@ public class SocketServiceImpl implements SocketService {
 
     private Map<UUID, Integer> uuidToPortMap = new HashMap<>();
 
-    private String request;
+    private volatile String request;
 
     public SocketServiceImpl() {
         initMap();
@@ -72,7 +72,7 @@ public class SocketServiceImpl implements SocketService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
             request = reader.readLine();
         } catch (IOException e) {
-            log.error("ERROR: Invalid UUID");
+            log.error("ERROR: Invalid request");
             throw new RuntimeException("ERROR: Invalid request");
         }
     }
