@@ -9,34 +9,42 @@ public class ResponseThread extends Thread {
     private volatile Socket toClient;
     private volatile Socket toTargetServer;
 
-    public ResponseThread(Socket toClient, Socket toTargetServer) throws IOException {
+    public ResponseThread(Socket toClient, Socket toTargetServer){
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
-        start();
     }
 
-
-    public String responseFromTargetServer(HttpURLConnection connection){
+    public String responseFromTargetServer(){
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(toTargetServer.getInputStream()));
             StringBuilder response = new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
             return response.toString();
         } catch (IOException e){
-            throw new RuntimeException("ERROR: Couldn't get a response from the target server" + toTargetServer.getInetAddress() + ":" + toTargetServer.getPort());
+            throw new RuntimeException("ERROR: Invalid response from target server");
         }
+//        try {
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            StringBuilder response = new StringBuilder();
+//            String line;
+//            while ((line = reader.readLine()) != null){
+//                response.append(line);
+//            }
+//            return response.toString();
+//        } catch (IOException e){
+//            throw new RuntimeException("ERROR: Couldn't get a response from the target server");
+//        }
     }
 
-    public synchronized boolean sentResponseToClient(String response){
+    public synchronized void sentResponseToClient(String response){
         try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream())));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream()));
             writer.write(response);
+            writer.newLine();
             writer.flush();
-            writer.close();
-            return true;
         } catch (IOException e) {
             throw new RuntimeException("ERROR: Couldn't send response to client");
         }
@@ -44,6 +52,7 @@ public class ResponseThread extends Thread {
 
     @Override
     public void run() {
-
+        String response = responseFromTargetServer();
+        sentResponseToClient(response);
     }
 }

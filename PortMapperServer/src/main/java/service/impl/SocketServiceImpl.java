@@ -2,15 +2,9 @@ package service.impl;
 
 import org.apache.log4j.Logger;
 import service.SocketService;
+import socketThreadPair.SocketThreadPair;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class SocketServiceImpl implements SocketService {
 
@@ -18,14 +12,14 @@ public class SocketServiceImpl implements SocketService {
 
     private Map<UUID, Integer> uuidToPortMap = new HashMap<>();
 
-    private volatile String request;
+    private List<SocketThreadPair> threadPairs = new ArrayList<>();
 
     public SocketServiceImpl() {
         initMap();
     }
 
     @Override
-    public Integer getPort(UUID uuid){
+    public synchronized Integer getPort(UUID uuid){
         return uuidToPortMap.get(uuid);
     }
 
@@ -38,54 +32,25 @@ public class SocketServiceImpl implements SocketService {
         uuidToPortMap.put(UUID.fromString("06dcc836-6c3f-4b28-ba2a-4259100d8d79"), 4565);
     }
 
-    @Override
-    public synchronized Socket connectionFromClient(ServerSocket serverSocket) throws IOException {
-        System.out.println("Waiting for connect...");
-        Socket result = serverSocket.accept();
-        System.out.println("Connect to " + result.getInetAddress());
-        return result;
-    }
-
 
     @Override
-    public Socket connectToTargetServer(Integer port) {
-        try {
-            return new Socket("localhost", port);
-        } catch (IOException e) {
-            log.error("ERROR: Can't connect to target server on port " + port);
-            throw new RuntimeException("ERROR: Can't connect to target server on port " + port);
-        }
-    }
-
-    @Override
-    public synchronized String getUUIDFromClient() {
-        return getUUID(request);
-    }
-
-    @Override
-    public synchronized String getRequestFromClient() {
-        return getQuery(request);
-    }
-
-    public synchronized void getRequest(Socket toClient){
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
-            request = reader.readLine();
-        } catch (IOException e) {
-            log.error("ERROR: Invalid request");
-            throw new RuntimeException("ERROR: Invalid request");
-        }
-    }
-
-    private synchronized String getUUID (String request){
-        String[] splitRequest = request.split("/");
+    public synchronized String getUUIDFromClient(String request) {
+        String[] splitRequest = request.split(":");
         return splitRequest[0];
     }
 
-    private synchronized String getQuery (String request){
-        String[] splitRequest = request.split("/");
+    @Override
+    public synchronized void addSocketThreadPairToList(SocketThreadPair threadPair) {
+        threadPairs.add(threadPair);
+    }
+
+    @Override
+    public synchronized String getQueryFromClient(String request) {
+        String[] splitRequest = request.split(":");
         return splitRequest[1];
     }
+
+
 
 
 }

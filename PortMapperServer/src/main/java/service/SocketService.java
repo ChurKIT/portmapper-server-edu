@@ -1,5 +1,7 @@
 package service;
 
+import socketThreadPair.SocketThreadPair;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,16 +9,14 @@ import java.util.UUID;
 
 public interface SocketService {
 
-    public Integer getPort(UUID uuid);
+    Integer getPort(UUID uuid);
 
-    public void initMap();
+    void initMap();
 
-    public Socket connectionFromClient(ServerSocket serverSocket) throws IOException;
+    String getQueryFromClient(String request);
 
-    public Socket connectToTargetServer(Integer port);
+    String getUUIDFromClient(String request);
 
-    public String getRequestFromClient();
-
-    public String getUUIDFromClient();
+    void addSocketThreadPairToList(SocketThreadPair threadPair);
 
 }

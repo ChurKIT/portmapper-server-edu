@@ -11,11 +11,17 @@ public class Run {
 
     public static void main(String[] args) {
         ConnectService service = new ConnectServiceImpl();
-        service.connect();
-        service.mapTo();
-        service.query();
-        System.out.println("Response:");
-        System.out.println(service.readResponse());
+        try {
+            service.connect();
+            service.mapTo();
+            service.query();
+            Thread.sleep(5000);
+            System.out.println("Response:");
+            System.out.println(service.readResponse());
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
     }
 
 }

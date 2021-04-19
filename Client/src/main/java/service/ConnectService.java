@@ -2,12 +2,16 @@ package service;
 
 public interface ConnectService {
 
-    public boolean connect();
+    void connect();
 
-    public boolean mapTo();
+    void query();
 
-    public void query();
+    void mapTo();
 
-    public String readResponse();
+    String readResponse();
+
+//    void sendRequest();
+
+    void close();
 
 }

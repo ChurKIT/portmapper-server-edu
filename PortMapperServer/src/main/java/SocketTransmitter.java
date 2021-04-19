@@ -1,13 +1,9 @@
+import socketThreadPair.SocketThreadPair;
 import org.apache.log4j.Logger;
-import request.RequestThread;
 import service.impl.SocketServiceImpl;
-import response.ResponseThread;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -23,7 +19,6 @@ public class SocketTransmitter extends Thread {
 
     public SocketTransmitter() {
         getProperties();
-        //setDaemon(true);
         try {
             serverSocket = new ServerSocket(listeningPort, 10, InetAddress.getByName("localhost"));
             socketService = new SocketServiceImpl();
@@ -48,30 +43,74 @@ public class SocketTransmitter extends Thread {
     @Override
     public void run() {
         System.out.println("Server listening: " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
-
-        try {
-            toClient = socketService.connectionFromClient(serverSocket);
-            socketService.getRequest(toClient);
-            String targetServerUUID = socketService.getUUIDFromClient();
+        while (true) {
+            toClient = connectionFromClient(serverSocket);
+            String targetServerUUID = getUUIDFromClient(toClient);
             Integer targetServerPort = socketService.getPort(UUID.fromString(targetServerUUID));
-            toTargetServer = socketService.connectToTargetServer(targetServerPort);
-            toClient = socketService.connectionFromClient(serverSocket);
+            toTargetServer = connectToTargetServer(targetServerPort);
 
+            SocketThreadPair socketThreadPair = new SocketThreadPair(toClient, toTargetServer);
+            socketService.addSocketThreadPairToList(socketThreadPair);
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-            RequestThread requestThread = new RequestThread(socketService);
-            ResponseThread responseThread = new ResponseThread(toClient, toTargetServer);
-
-            //todo wrap in a loop with check and exit on request
-            HttpURLConnection connection = requestThread.requestToTargetServer(requestThread.requestFromClient());
-            responseThread.sentResponseToClient(responseThread.responseFromTargetServer(connection));
-
-            //toClient.close();
-            //toTargetServer.close();
+//                serverSocket.close();
+//                toClient.close();
             System.out.println("SocketTransmitter work end");
+        }
+    }
+
+    public synchronized Socket connectionFromClient(ServerSocket serverSocket) {
+        System.out.println("Waiting for connect...");
+        Socket result = null;
+        try {
+            result = serverSocket.accept();
         } catch (IOException e) {
-            log.error("FATAL ERROR IN SocketTransmitter Thread");
-            throw new RuntimeException("FATAL ERROR IN SocketTransmitter Thread");
+            log.error("ERROR : Failed to create client connection");
+        }
+        System.out.println("Connect to " + result.getInetAddress());
+        return result;
+    }
+
+    public synchronized String getUUIDFromClient(Socket toClient){
+        try {
+            BufferedReader reader = new BufferedReader( new InputStreamReader(toClient.getInputStream()));
+            String uuid = reader.readLine();
+            return uuid;
+        } catch (IOException e) {
+            log.error("ERROR: Invalid uuid");
+            throw new RuntimeException("ERROR: Invalid uuid");
+        }
+    }
+
+    public synchronized Socket connectToTargetServer(Integer port) {
+        try {
+            Socket socket = new Socket("localhost", port);
+            return socket;
+        } catch (IOException e){
+            throw new RuntimeException("ERROR: Couldn't to connect to server");
         }
 
+
+//        try {
+//            toTargetServer = (HttpURLConnection) new URL("http://localhost:" + port).openConnection();
+//            toTargetServer.setRequestMethod("GET");
+//            toTargetServer.setUseCaches(false);
+//            return toTargetServer;
+//        } catch (IOException e){
+//            throw new RuntimeException("ERROR: Couldn't to connect to server");
+//        }
+//        String url = "http://localhost:" + port + "/";
+//        HttpURLConnection connection = null;
+//        try {
+//            connection = (HttpURLConnection) new URL(url).openConnection();
+//            return connection;
+//        } catch (IOException e) {
+//            log.error("ERROR: Can't connect to target server on port " + port);
+//            throw new RuntimeException("ERROR: Can't connect to target server on port " + port);
+//        }
     }
 }

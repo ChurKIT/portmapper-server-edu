@@ -9,30 +9,32 @@ public class ConnectServiceImpl implements ConnectService {
 
     private static Socket clientSocket;
     private static BufferedReader reader;
-    private static PrintWriter out;
-    private static BufferedReader in;
-
+    private String uuidToTargetServer;
+    private String queryToTargetServer;
+    private String request;
+    private BufferedReader in;
+    private BufferedWriter out;
 
     @Override
-    public synchronized boolean connect() {
+    public synchronized void connect() {
         try {
             clientSocket = new Socket("localhost", 6666);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
             reader = new BufferedReader(new InputStreamReader(System.in));
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())));
-//            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            return true;
         } catch (IOException e){
             throw new RuntimeException("ERROR: Couldn't to connect to server");
         }
     }
 
     @Override
-    public synchronized boolean mapTo() {
+    public synchronized void mapTo() {
         try {
             System.out.println("Write UUID Target Server");
-            String uuid = reader.readLine();
-            out.write(uuid + "/");
-            return true;
+            uuidToTargetServer = reader.readLine();
+            out.write(uuidToTargetServer);
+            out.newLine();
+            out.flush();
         } catch (IOException e){
             throw new RuntimeException("ERROR: Undefined UUID");
         }
@@ -43,10 +45,10 @@ public class ConnectServiceImpl implements ConnectService {
      {
          try {
              System.out.println("Write query to Target Server");
-             String query = reader.readLine();
-             out.write(query);
+             queryToTargetServer = reader.readLine();
+             out.write(queryToTargetServer);
+             out.newLine();
              out.flush();
-             out.close();
          } catch (IOException e){
              throw new RuntimeException("ERROR: Undefined query");
          }
@@ -55,13 +57,32 @@ public class ConnectServiceImpl implements ConnectService {
     @Override
     public synchronized String readResponse() {
         try {
-            connect();
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String response = in.readLine();
-            in.close();
             return response;
         } catch (IOException e) {
             throw new RuntimeException("ERROR: Couldn't get response");
+        }
+    }
+
+//    @Override
+//    public synchronized void sendRequest(){
+//        request = uuidToTargetServer + ":" + queryToTargetServer;
+//        try {
+//            out.write(request);
+//            out.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    @Override
+    public synchronized void close(){
+        try {
+            out.close();
+            in.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException("ERROR: Couldn't close socket");
         }
     }
 }
