@@ -11,10 +11,10 @@ public class SocketTransmitter extends Thread {
 
     private static final Logger log = Logger.getLogger(SocketTransmitter.class);
 
-    private volatile SocketServiceImpl socketService;
-    private volatile ServerSocket serverSocket;
-    private volatile Socket toClient;
-    private volatile Socket toTargetServer;
+    private SocketServiceImpl socketService;
+    private ServerSocket serverSocket;
+    private Socket toClient;
+    private Socket toTargetServer;
     private volatile int listeningPort;
 
     public SocketTransmitter() {
@@ -51,19 +51,11 @@ public class SocketTransmitter extends Thread {
 
             SocketThreadPair socketThreadPair = new SocketThreadPair(toClient, toTargetServer);
             socketService.addSocketThreadPairToList(socketThreadPair);
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-//                serverSocket.close();
-//                toClient.close();
-            System.out.println("SocketTransmitter work end");
+            socketThreadPair.start();
         }
     }
 
-    public synchronized Socket connectionFromClient(ServerSocket serverSocket) {
+    public Socket connectionFromClient(ServerSocket serverSocket) {
         System.out.println("Waiting for connect...");
         Socket result = null;
         try {
@@ -75,10 +67,11 @@ public class SocketTransmitter extends Thread {
         return result;
     }
 
-    public synchronized String getUUIDFromClient(Socket toClient){
+    public String getUUIDFromClient(Socket toClient){
         try {
             BufferedReader reader = new BufferedReader( new InputStreamReader(toClient.getInputStream()));
             String uuid = reader.readLine();
+            //reader.close();
             return uuid;
         } catch (IOException e) {
             log.error("ERROR: Invalid uuid");
@@ -86,7 +79,7 @@ public class SocketTransmitter extends Thread {
         }
     }
 
-    public synchronized Socket connectToTargetServer(Integer port) {
+    public Socket connectToTargetServer(Integer port) {
         try {
             Socket socket = new Socket("localhost", port);
             return socket;

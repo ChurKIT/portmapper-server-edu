@@ -1,25 +1,37 @@
 package response;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.Socket;
 
 public class ResponseThread extends Thread {
 
-    private volatile Socket toClient;
-    private volatile Socket toTargetServer;
+    private Socket toClient;
+    private Socket toTargetServer;
+    private BufferedReader inFromTargetServer;
+    private BufferedWriter outToClient;
+    private volatile boolean isDone;
 
     public ResponseThread(Socket toClient, Socket toTargetServer){
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
+        isDone = false;
+        initStreams();
+    }
+
+    private void initStreams(){
+        try {
+            inFromTargetServer = new BufferedReader(new InputStreamReader(toTargetServer.getInputStream()));
+            outToClient = new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String responseFromTargetServer(){
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(toTargetServer.getInputStream()));
             StringBuilder response = new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = inFromTargetServer.readLine()) != null) {
                 response.append(line);
             }
             return response.toString();
@@ -39,20 +51,33 @@ public class ResponseThread extends Thread {
 //        }
     }
 
-    public synchronized void sentResponseToClient(String response){
+    public void sentResponseToClient(String response){
         try {
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream()));
-            writer.write(response);
-            writer.newLine();
-            writer.flush();
+            outToClient.write(response);
+            outToClient.newLine();
+            outToClient.flush();
         } catch (IOException e) {
             throw new RuntimeException("ERROR: Couldn't send response to client");
         }
+    }
+
+    private void closeStreams(){
+        try {
+            inFromTargetServer.close();
+            outToClient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isDone(){
+        return isDone;
     }
 
     @Override
     public void run() {
         String response = responseFromTargetServer();
         sentResponseToClient(response);
+        isDone = true;
     }
 }

@@ -1,26 +1,37 @@
 package request;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.Socket;
 
 public class RequestThread extends Thread{
 
     private Socket toClient;
     private Socket toTargetServer;
+    private BufferedReader inFromClient;
+    private BufferedWriter outToTargetServer;
     private volatile boolean isDone;
 
 
     public RequestThread(Socket toClient, Socket toTargetServer) {
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
+        initStreams();
         isDone = false;
+    }
+
+    private void initStreams(){
+        try {
+            this.inFromClient = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
+            this.outToTargetServer = new BufferedWriter(new OutputStreamWriter(toTargetServer.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public String queryFromClient() {
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
-            String query = reader.readLine();
+            String query = inFromClient.readLine();
             return query;
         } catch (IOException e) {
             //log.error("ERROR: Invalid request");
@@ -33,10 +44,9 @@ public class RequestThread extends Thread{
                     "Host: " + toTargetServer.getInetAddress().getHostName() + "\r\n\r\n";
 
         try {
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toTargetServer.getOutputStream()));
-            writer.write(request);
-            writer.flush();
-            //writer.close();
+            outToTargetServer.write(request);
+            outToTargetServer.newLine();
+            outToTargetServer.flush();
         } catch (IOException e) {
             //log.error("ERROR: Invalid request");
             throw new RuntimeException("ERROR: Invalid GET request to Target Server");

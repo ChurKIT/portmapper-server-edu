@@ -3,7 +3,6 @@ package socketThreadPair;
 import request.RequestThread;
 import response.ResponseThread;
 
-import java.net.HttpURLConnection;
 import java.net.Socket;
 
 public class SocketThreadPair extends Thread{
@@ -14,7 +13,6 @@ public class SocketThreadPair extends Thread{
     public SocketThreadPair(Socket toClient, Socket toTargetServer) {
         this.request = new RequestThread(toClient, toTargetServer);
         this.response = new ResponseThread(toClient, toTargetServer);
-        this.start();
     }
 
     public RequestThread getRequest() {
@@ -36,15 +34,16 @@ public class SocketThreadPair extends Thread{
     @Override
     public void run() {
         request.start();
-        //todo remove this stub
-        while (!request.isDone()){
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        while (true){
+            if(request.isDone()){
+                break;
             }
         }
         response.start();
-
+        while (true){
+            if(response.isDone()){
+                break;
+            }
+        }
     }
 }
