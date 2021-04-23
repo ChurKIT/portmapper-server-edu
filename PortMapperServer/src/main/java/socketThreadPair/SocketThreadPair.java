@@ -9,6 +9,7 @@ public class SocketThreadPair extends Thread{
 
     private RequestThread request;
     private ResponseThread response;
+    //private ThreadContext context
 
     public SocketThreadPair(Socket toClient, Socket toTargetServer) {
         this.request = new RequestThread(toClient, toTargetServer);
@@ -31,6 +32,7 @@ public class SocketThreadPair extends Thread{
         this.response = response;
     }
 
+    // interface ThreadListener
     @Override
     public void run() {
         request.start();

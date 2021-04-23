@@ -10,29 +10,23 @@ public class RequestThread extends Thread{
     private BufferedReader inFromClient;
     private BufferedWriter outToTargetServer;
     private volatile boolean isDone;
+    private volatile boolean clientExit;
 
 
     public RequestThread(Socket toClient, Socket toTargetServer) {
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
-        initStreams();
         isDone = false;
+        clientExit = false;
     }
 
-    private void initStreams(){
-        try {
-            this.inFromClient = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
-            this.outToTargetServer = new BufferedWriter(new OutputStreamWriter(toTargetServer.getOutputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public String queryFromClient() {
         try {
-            String query = inFromClient.readLine();
-            return query;
+                BufferedReader reader = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
+                String query = reader.readLine();
+                toClient.shutdownInput();
+                return query;
         } catch (IOException e) {
             //log.error("ERROR: Invalid request");
             throw new RuntimeException("ERROR: Invalid request");
@@ -44,9 +38,10 @@ public class RequestThread extends Thread{
                     "Host: " + toTargetServer.getInetAddress().getHostName() + "\r\n\r\n";
 
         try {
-            outToTargetServer.write(request);
-            outToTargetServer.newLine();
-            outToTargetServer.flush();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toTargetServer.getOutputStream()));
+            writer.write(request);
+            writer.flush();
+            toTargetServer.shutdownOutput();
         } catch (IOException e) {
             //log.error("ERROR: Invalid request");
             throw new RuntimeException("ERROR: Invalid GET request to Target Server");
@@ -55,8 +50,9 @@ public class RequestThread extends Thread{
 
     @Override
     public void run() {
-        String query = queryFromClient();
-        queryToTargetServer(query);
+
+        String request = queryFromClient();
+        queryToTargetServer(request);
         isDone = true;
     }
 

@@ -1,9 +1,14 @@
-import socketThreadPair.SocketThreadPair;
 import org.apache.log4j.Logger;
 import service.impl.SocketServiceImpl;
+import socketThreadPair.SocketThreadPair;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -71,7 +76,6 @@ public class SocketTransmitter extends Thread {
         try {
             BufferedReader reader = new BufferedReader( new InputStreamReader(toClient.getInputStream()));
             String uuid = reader.readLine();
-            //reader.close();
             return uuid;
         } catch (IOException e) {
             log.error("ERROR: Invalid uuid");

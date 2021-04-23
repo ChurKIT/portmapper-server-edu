@@ -18,7 +18,7 @@ public class ConnectServiceImpl implements ConnectService {
     @Override
     public synchronized void connect() {
         try {
-            clientSocket = new Socket("localhost", 6666);
+            clientSocket = new Socket("localhost", 4545);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
             reader = new BufferedReader(new InputStreamReader(System.in));

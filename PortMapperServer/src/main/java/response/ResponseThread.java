@@ -15,58 +15,32 @@ public class ResponseThread extends Thread {
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
         isDone = false;
-        initStreams();
-    }
-
-    private void initStreams(){
-        try {
-            inFromTargetServer = new BufferedReader(new InputStreamReader(toTargetServer.getInputStream()));
-            outToClient = new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public String responseFromTargetServer(){
+        StringBuilder response = new StringBuilder();
         try {
-            StringBuilder response = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(toTargetServer.getInputStream()));
             String line;
-            while ((line = inFromTargetServer.readLine()) != null) {
+            while ((line = reader.readLine()) != null){
                 response.append(line);
             }
+            toTargetServer.shutdownInput();
             return response.toString();
         } catch (IOException e){
-            throw new RuntimeException("ERROR: Invalid response from target server");
+            throw new RuntimeException("ERROR: Couldn't get a response from the target server");
         }
-//        try {
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            StringBuilder response = new StringBuilder();
-//            String line;
-//            while ((line = reader.readLine()) != null){
-//                response.append(line);
-//            }
-//            return response.toString();
-//        } catch (IOException e){
-//            throw new RuntimeException("ERROR: Couldn't get a response from the target server");
-//        }
     }
 
     public void sentResponseToClient(String response){
         try {
-            outToClient.write(response);
-            outToClient.newLine();
-            outToClient.flush();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toClient.getOutputStream()));
+            writer.write(response);
+            writer.newLine();
+            writer.flush();
+            toClient.shutdownOutput();
         } catch (IOException e) {
             throw new RuntimeException("ERROR: Couldn't send response to client");
-        }
-    }
-
-    private void closeStreams(){
-        try {
-            inFromTargetServer.close();
-            outToClient.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
