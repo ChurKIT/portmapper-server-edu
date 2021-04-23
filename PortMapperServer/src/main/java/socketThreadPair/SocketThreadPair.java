@@ -36,16 +36,17 @@ public class SocketThreadPair extends Thread{
     @Override
     public void run() {
         request.start();
-        while (true){
-            if(request.isDone()){
-                break;
-            }
-        }
+
+//        while (true){
+//            if(request.isDone()){
+//                break;
+//            }
+//        }
         response.start();
-        while (true){
-            if(response.isDone()){
-                break;
-            }
-        }
+//        while (true){
+//            if(response.isDone()){
+//                break;
+//            }
+//        }
     }
 }

@@ -1,5 +1,7 @@
 package response;
 
+import listener.ThreadListener;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -7,9 +9,8 @@ public class ResponseThread extends Thread {
 
     private Socket toClient;
     private Socket toTargetServer;
-    private BufferedReader inFromTargetServer;
-    private BufferedWriter outToClient;
-    private volatile boolean isDone;
+    private boolean isDone;
+    ThreadListener listener;
 
     public ResponseThread(Socket toClient, Socket toTargetServer){
         this.toClient = toClient;
@@ -48,10 +49,15 @@ public class ResponseThread extends Thread {
         return isDone;
     }
 
+    public void setListener(ThreadListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public void run() {
         String response = responseFromTargetServer();
         sentResponseToClient(response);
+        listener.accept();
         isDone = true;
     }
 }

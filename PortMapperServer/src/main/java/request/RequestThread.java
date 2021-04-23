@@ -1,5 +1,7 @@
 package request;
 
+import listener.ThreadListener;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -7,10 +9,9 @@ public class RequestThread extends Thread{
 
     private Socket toClient;
     private Socket toTargetServer;
-    private BufferedReader inFromClient;
-    private BufferedWriter outToTargetServer;
-    private volatile boolean isDone;
-    private volatile boolean clientExit;
+    private boolean isDone;
+    private boolean clientExit;
+    private ThreadListener listener;
 
 
     public RequestThread(Socket toClient, Socket toTargetServer) {
@@ -48,16 +49,19 @@ public class RequestThread extends Thread{
         }
     }
 
-    @Override
-    public void run() {
-
-        String request = queryFromClient();
-        queryToTargetServer(request);
-        isDone = true;
-    }
-
-
     public boolean isDone() {
         return isDone;
+    }
+
+    public void setListener(ThreadListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void run() {
+        String request = queryFromClient();
+        queryToTargetServer(request);
+        listener.accept();
+        isDone = true;
     }
 }
