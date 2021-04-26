@@ -11,3 +11,7 @@
 2021-04-19 18:40:33 ERROR SocketTransmitter:72 - ERROR : Failed to create client connection
 2021-04-19 18:41:28 ERROR SocketTransmitter:72 - ERROR : Failed to create client connection
 2021-04-21 21:11:27 ERROR SocketTransmitter:78 - ERROR: Invalid uuid
+2021-04-26 20:17:53 ERROR RequestThread:40 - ERROR: Invalid request from Client
+2021-04-26 20:28:58 ERROR SocketTransmitter:60 - ERROR : Invalid UUID
+2021-04-26 20:33:57 ERROR SocketTransmitter:60 - ERROR : Invalid UUID
+2021-04-26 20:34:18 ERROR SocketTransmitter:98 - ERROR : Unable to connect to server with this port

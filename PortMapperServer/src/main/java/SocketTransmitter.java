@@ -1,4 +1,5 @@
 import org.apache.log4j.Logger;
+import poolThreads.PoolThreads;
 import service.impl.SocketServiceImpl;
 import socketThreadPair.SocketThreadPair;
 
@@ -12,7 +13,7 @@ import java.net.Socket;
 import java.util.Properties;
 import java.util.UUID;
 
-public class SocketTransmitter extends Thread {
+public class SocketTransmitter {
 
     private static final Logger log = Logger.getLogger(SocketTransmitter.class);
 
@@ -27,7 +28,6 @@ public class SocketTransmitter extends Thread {
         try {
             serverSocket = new ServerSocket(listeningPort, 10, InetAddress.getByName("localhost"));
             socketService = new SocketServiceImpl();
-            start();
         } catch (IOException t) {
             t.printStackTrace();
         }
@@ -45,18 +45,25 @@ public class SocketTransmitter extends Thread {
         }
     }
 
-    @Override
     public void run() {
-        System.out.println("Server listening: " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
         while (true) {
+            System.out.println("Server listening: " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
             toClient = connectionFromClient(serverSocket);
-            String targetServerUUID = getUUIDFromClient(toClient);
-            Integer targetServerPort = socketService.getPort(UUID.fromString(targetServerUUID));
-            toTargetServer = connectToTargetServer(targetServerPort);
+            try {
+                String targetServerUUID = getUUIDFromClient(toClient);
+                Integer targetServerPort = socketService.getPort(UUID.fromString(targetServerUUID));
+                toTargetServer = connectToTargetServer(targetServerPort);
+            } catch (NullPointerException e ){
+                log.error("ERROR on " + toClient.getInetAddress() +  ": Nothing entered when prompted for UUID");
+                continue; //затычка
+            } catch (IllegalArgumentException e){
+                log.error("ERROR on " + toClient.getInetAddress() + ": Invalid UUID");
+                continue; //затычка
+            }
 
             SocketThreadPair socketThreadPair = new SocketThreadPair(toClient, toTargetServer);
             socketService.addSocketThreadPairToList(socketThreadPair);
-            socketThreadPair.start();
+            PoolThreads.INSTANCE.executor.submit(socketThreadPair);
         }
     }
 
@@ -73,23 +80,24 @@ public class SocketTransmitter extends Thread {
     }
 
     public String getUUIDFromClient(Socket toClient){
+        String uuid = null;
         try {
             BufferedReader reader = new BufferedReader( new InputStreamReader(toClient.getInputStream()));
-            String uuid = reader.readLine();
-            return uuid;
+            uuid = reader.readLine();
         } catch (IOException e) {
-            log.error("ERROR: Invalid uuid");
-            throw new RuntimeException("ERROR: Invalid uuid");
+            log.error("ERROR on " + toClient.getInetAddress() + ": Invalid uuid");
         }
+        return uuid;
     }
 
     public Socket connectToTargetServer(Integer port) {
+        Socket socket = null;
         try {
-            Socket socket = new Socket("localhost", port);
-            return socket;
+            socket = new Socket("localhost", port);
         } catch (IOException e){
-            throw new RuntimeException("ERROR: Couldn't to connect to server");
+            log.error("ERROR on " + toClient.getInetAddress() + ": Unable to connect to server with this port");
         }
+            return socket;
 
 
 //        try {

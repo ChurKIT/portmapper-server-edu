@@ -1,14 +1,13 @@
 package context;
 
-import java.util.Date;
-
 public class Context {
 
     private boolean threadPairIsFinished;
-    private int requestBytes;
-    private int responseBytes;
-    private Date startSession;
-    private Date stopSession;
+    private int requestBytes = 0;
+    private int responseBytes = 0;
+    private long startSession;
+    private long stopSession;
+    private long workTime;
 
     public boolean isThreadPairIsFinished() {
         return threadPairIsFinished;
@@ -22,31 +21,52 @@ public class Context {
         return requestBytes;
     }
 
-    public void setRequestBytes(int requestBytes) {
-        this.requestBytes = requestBytes;
-    }
-
     public int getResponseBytes() {
         return responseBytes;
     }
 
-    public void setResponseBytes(int responseBytes) {
-        this.responseBytes = responseBytes;
-    }
-
-    public Date getStartSession() {
+    public long getStartSession() {
         return startSession;
     }
 
-    public void setStartSession(Date startSession) {
-        this.startSession = startSession;
+    public void setStartSession() {
+
+        this.startSession = System.currentTimeMillis();
     }
 
-    public Date getStopSession() {
+    public long getStopSession() {
         return stopSession;
     }
 
-    public void setStopSession(Date stopSession) {
-        this.stopSession = stopSession;
+    public void setStopSession() {
+        this.stopSession = System.currentTimeMillis();
+    }
+
+    public long getWorkTime() {
+        return workTime;
+    }
+
+    public void setWorkTime() {
+        this.workTime = stopSession - startSession;
+    }
+
+    public void countRequestBytes(int bytes){
+        requestBytes += bytes;
+    }
+
+    public void countResponseBytes(int bytes){
+        responseBytes += bytes;
+    }
+
+    @Override
+    public String toString() {
+        return "Context{" +
+                "threadPairIsFinished=" + threadPairIsFinished +
+                ", requestBytes=" + requestBytes +
+                ", responseBytes=" + responseBytes +
+                ", startSession=" + startSession +
+                ", stopSession=" + stopSession +
+                ", workTime=" + workTime +
+                '}';
     }
 }

@@ -14,6 +14,7 @@ public class ConnectServiceImpl implements ConnectService {
     private String request;
     private BufferedReader in;
     private BufferedWriter out;
+    private boolean isDone = false;
 
     @Override
     public synchronized void connect() {
@@ -46,6 +47,9 @@ public class ConnectServiceImpl implements ConnectService {
          try {
              System.out.println("Write query to Target Server");
              queryToTargetServer = reader.readLine();
+             if (queryToTargetServer.equals("DONE")){
+                 isDone = true;
+             }
              out.write(queryToTargetServer);
              out.newLine();
              out.flush();
@@ -84,5 +88,10 @@ public class ConnectServiceImpl implements ConnectService {
         } catch (IOException e) {
             throw new RuntimeException("ERROR: Couldn't close socket");
         }
+    }
+
+    @Override
+    public boolean isDone() {
+        return isDone;
     }
 }

@@ -14,4 +14,6 @@ public interface ConnectService {
 
     void close();
 
+    boolean isDone();
+
 }

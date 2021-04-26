@@ -1,20 +1,27 @@
 package response;
 
+import context.Context;
 import listener.ThreadListener;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
-public class ResponseThread extends Thread {
+public class ResponseThread implements Runnable {
+
+    private static final Logger log = Logger.getLogger(ResponseThread.class);
 
     private Socket toClient;
     private Socket toTargetServer;
     private boolean isDone;
     ThreadListener listener;
+    private Context context;
 
-    public ResponseThread(Socket toClient, Socket toTargetServer){
+    public ResponseThread(Socket toClient, Socket toTargetServer, Context context){
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
+        this.context = context;
         isDone = false;
     }
 
@@ -27,10 +34,13 @@ public class ResponseThread extends Thread {
                 response.append(line);
             }
             toTargetServer.shutdownInput();
-            return response.toString();
+            context.countResponseBytes(response.toString().getBytes(StandardCharsets.UTF_8).length);
         } catch (IOException e){
-            throw new RuntimeException("ERROR: Couldn't get a response from the target server");
+            log.error("ERROR: Couldn't get a response from the target server");
+//            throw new RuntimeException("ERROR: Couldn't get a response from the target server");
         }
+            context.countResponseBytes(response.toString().getBytes().length);
+            return response.toString();
     }
 
     public void sentResponseToClient(String response){
@@ -41,7 +51,8 @@ public class ResponseThread extends Thread {
             writer.flush();
             toClient.shutdownOutput();
         } catch (IOException e) {
-            throw new RuntimeException("ERROR: Couldn't send response to client");
+            log.error("ERROR: Couldn't send response to client");
+//            throw new RuntimeException("ERROR: Couldn't send response to client");
         }
     }
 
