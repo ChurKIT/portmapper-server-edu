@@ -1,7 +1,7 @@
-##Educational project.
+#Educational project.
 The essence of the project is to write a PortMapper server that will redirect requests and responses from the Client to the Target server and back.
 
-####Startup sequence:
+##Startup sequence:
 
     1.TargetServerApplication.java (port 8080)
 

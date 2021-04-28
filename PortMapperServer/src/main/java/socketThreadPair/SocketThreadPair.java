@@ -46,7 +46,7 @@ public class SocketThreadPair implements Runnable{
     }
 
     private void close() {
-        response.sentResponseToClient("No request has been received from you within 20 seconds"); //стоит ли так делать?
+        //response.sentResponseToClient("No request has been received from you within 20 seconds"); //стоит ли так делать?
         try {
             toClient.close();
         } catch (IOException e) {
@@ -76,6 +76,5 @@ public class SocketThreadPair implements Runnable{
 //        }
         context.setStopSession();
         System.out.println(context.toString());
-        close();
     }
 }
