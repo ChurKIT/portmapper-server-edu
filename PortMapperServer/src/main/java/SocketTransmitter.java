@@ -46,7 +46,7 @@ public class SocketTransmitter {
     }
 
     public void run() {
-        while (true) {
+        while (!serverSocket.isClosed()) {
             System.out.println("Server listening: " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
             toClient = connectionFromClient(serverSocket);
             try {

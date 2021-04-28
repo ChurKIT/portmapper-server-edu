@@ -17,7 +17,7 @@ public class ConnectServiceImpl implements ConnectService {
     private boolean isDone = false;
 
     @Override
-    public synchronized void connect() {
+    public void connect() {
         try {
             clientSocket = new Socket("localhost", 4545);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -29,7 +29,7 @@ public class ConnectServiceImpl implements ConnectService {
     }
 
     @Override
-    public synchronized void mapTo() {
+    public void mapTo() {
         try {
             System.out.println("Write UUID Target Server");
             uuidToTargetServer = reader.readLine();
@@ -42,24 +42,28 @@ public class ConnectServiceImpl implements ConnectService {
     }
 
     @Override
-    public synchronized void query()
+    public void query()
      {
-         try {
-             System.out.println("Write query to Target Server");
-             queryToTargetServer = reader.readLine();
-             if (queryToTargetServer.equals("DONE")){
-                 isDone = true;
+         if (!clientSocket.isClosed()){
+             try {
+                 System.out.println("Write query to Target Server");
+                 queryToTargetServer = reader.readLine();
+                 if (queryToTargetServer.equals("DONE")) {
+                     isDone = true;
+                 }
+                 out.write(queryToTargetServer);
+                 out.newLine();
+                 out.flush();
+             } catch (IOException e) {
+                 throw new RuntimeException("ERROR: Undefined query");
              }
-             out.write(queryToTargetServer);
-             out.newLine();
-             out.flush();
-         } catch (IOException e){
-             throw new RuntimeException("ERROR: Undefined query");
+         } else {
+             isDone = true;
          }
     }
 
     @Override
-    public synchronized String readResponse() {
+    public String readResponse() {
         try {
             String response = in.readLine();
             return response;
@@ -80,7 +84,7 @@ public class ConnectServiceImpl implements ConnectService {
 //    }
 
     @Override
-    public synchronized void close(){
+    public void close(){
         try {
             out.close();
             in.close();

@@ -11,11 +11,11 @@ public class Run {
         ConnectService service = new ConnectServiceImpl();
             service.connect();
             service.mapTo();
-//            while (!service.isDone()) {
+            while (!service.isDone()) {
                 service.query();
                 System.out.println("Response:");
                 System.out.println(service.readResponse());
-//            }
+            }
             service.close();
 //        Socket toTargetServer = new Socket("localhost", 9090);
 //        BufferedReader reader = new BufferedReader(new InputStreamReader(toTargetServer.getInputStream()));

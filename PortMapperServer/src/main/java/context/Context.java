@@ -40,6 +40,7 @@ public class Context {
 
     public void setStopSession() {
         this.stopSession = System.currentTimeMillis();
+        setWorkTime();
     }
 
     public long getWorkTime() {
@@ -52,10 +53,12 @@ public class Context {
 
     public void countRequestBytes(int bytes){
         requestBytes += bytes;
+
     }
 
     public void countResponseBytes(int bytes){
         responseBytes += bytes;
+
     }
 
     @Override

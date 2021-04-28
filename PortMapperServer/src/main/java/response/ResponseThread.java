@@ -1,7 +1,6 @@
 package response;
 
 import context.Context;
-import listener.ThreadListener;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -12,10 +11,9 @@ public class ResponseThread implements Runnable {
 
     private static final Logger log = Logger.getLogger(ResponseThread.class);
 
-    private Socket toClient;
-    private Socket toTargetServer;
+    private final Socket toClient;
+    private final Socket toTargetServer;
     private boolean isDone;
-    ThreadListener listener;
     private Context context;
 
     public ResponseThread(Socket toClient, Socket toTargetServer, Context context){
@@ -60,15 +58,11 @@ public class ResponseThread implements Runnable {
         return isDone;
     }
 
-    public void setListener(ThreadListener listener) {
-        this.listener = listener;
-    }
 
     @Override
     public void run() {
         String response = responseFromTargetServer();
         sentResponseToClient(response);
-        listener.accept();
         isDone = true;
     }
 }

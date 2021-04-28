@@ -8,6 +8,10 @@ import response.ResponseThread;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class SocketThreadPair implements Runnable{
 
@@ -15,7 +19,7 @@ public class SocketThreadPair implements Runnable{
 
     private RequestThread request;
     private ResponseThread response;
-    private Socket toClient;
+    private final Socket toClient;
     private Context context;
 
     public SocketThreadPair(Socket toClient, Socket toTargetServer) {
@@ -53,21 +57,25 @@ public class SocketThreadPair implements Runnable{
     @Override
     public void run() {
         context.setStartSession();
+        //todo solve infinite loop problem
 //        while (!toClient.isClosed()) {
-            PoolThreads.INSTANCE.executor.submit(request);
-//            try {
-//                toClient.setSoTimeout(20000);
-//            } catch (SocketException e) {
-//                log.error("ERROR on " + toClient.getInetAddress() +
-//                        ": An error occurred while waiting for a request from the client." );
-//                this.close();
-//                break;
-//            }
-            //todo добавить таймер ожидания запроса от клиента(если запроса нет закрывать тредпару и соединение)
-            PoolThreads.INSTANCE.executor.submit(response);
-            //todo добавить таймер ожидания ответа от сервера(если сервера нет закрывать тредпару и соединение)
+            Future<?> requestFuture = PoolThreads.INSTANCE.executor.submit(request);
+            try {
+                requestFuture.get(20, TimeUnit.SECONDS);
+            } catch (ExecutionException | InterruptedException | TimeoutException e) {
+                log.error("ERROR on " + toClient.getInetAddress() + " : The timeout for a request from the client has expired ");
+                close();
+            }
+            Future<?> responseFuture = PoolThreads.INSTANCE.executor.submit(response);
+            try {
+                responseFuture.get(20, TimeUnit.SECONDS);
+            } catch (ExecutionException | InterruptedException | TimeoutException e) {
+                log.error("ERROR on " + toClient.getInetAddress() + " : The timeout for a response from the target server has expired ");
+                close();
+            }
 //        }
         context.setStopSession();
         System.out.println(context.toString());
+        close();
     }
 }

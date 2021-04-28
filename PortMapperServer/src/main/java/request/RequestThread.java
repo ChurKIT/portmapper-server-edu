@@ -1,7 +1,6 @@
 package request;
 
 import context.Context;
-import listener.ThreadListener;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -12,11 +11,9 @@ public class RequestThread implements Runnable{
 
     private static final Logger log = Logger.getLogger(RequestThread.class);
 
-    private Socket toClient;
-    private Socket toTargetServer;
+    private final Socket toClient;
+    private final Socket toTargetServer;
     private boolean isDone;
-    private boolean clientExit;
-    private ThreadListener listener;
     private Context context;
 
 
@@ -25,7 +22,6 @@ public class RequestThread implements Runnable{
         this.toTargetServer = toTargetServer;
         this.context = context;
         isDone = false;
-        clientExit = false;
     }
 
 
@@ -60,15 +56,11 @@ public class RequestThread implements Runnable{
         return isDone;
     }
 
-    public void setListener(ThreadListener listener){
-        this.listener = listener;
-    }
-
     @Override
     public void run() {
         String request = queryFromClient();
         queryToTargetServer(request);
-        listener.accept();
         isDone = true;
     }
+
 }
