@@ -24,21 +24,22 @@ public class ResponseThread implements Runnable {
     }
 
     public String responseFromTargetServer(){
-        StringBuilder response = new StringBuilder();
+        String response = "";
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(toTargetServer.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null){
-                response.append(line);
+                response += line;
+                response += "\r\n";
             }
             toTargetServer.shutdownInput();
-            context.countResponseBytes(response.toString().getBytes(StandardCharsets.UTF_8).length);
+            context.countResponseBytes(response.getBytes(StandardCharsets.UTF_8).length);
         } catch (IOException e){
             log.error("ERROR: Couldn't get a response from the target server");
 //            throw new RuntimeException("ERROR: Couldn't get a response from the target server");
         }
-            context.countResponseBytes(response.toString().getBytes().length);
-            return response.toString();
+            context.countResponseBytes(response.getBytes().length);
+            return response;
     }
 
     public void sentResponseToClient(String response){

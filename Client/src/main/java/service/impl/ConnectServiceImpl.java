@@ -44,13 +44,17 @@ public class ConnectServiceImpl implements ConnectService {
     @Override
     public void query()
      {
+         queryToTargetServer = "";
          if (!clientSocket.isClosed()){
              try {
                  System.out.println("Write query to Target Server");
-                 queryToTargetServer = reader.readLine();
-                 if (queryToTargetServer.equals("DONE")) {
-                     isDone = true;
+                 String line = reader.readLine();
+                 while (!line.equals("DONE")){
+                     queryToTargetServer += line;
+                     queryToTargetServer += "\r\n";
+                     line = reader.readLine();
                  }
+                 isDone = true;
                  out.write(queryToTargetServer);
                  out.newLine();
                  out.flush();
@@ -62,10 +66,19 @@ public class ConnectServiceImpl implements ConnectService {
          }
     }
 
+    public void sendRequest(){
+
+    }
+
     @Override
     public String readResponse() {
         try {
-            String response = in.readLine();
+            String line;
+            String response = "";
+            while ((line = in.readLine()) != null){
+                response += line;
+                response += "\r\n";
+            }
             return response;
         } catch (IOException e) {
             throw new RuntimeException("ERROR: Couldn't get response");

@@ -28,10 +28,16 @@ public class RequestThread implements Runnable{
     public String queryFromClient() {
         String query = "";
         try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
-                query = reader.readLine();
-                toClient.shutdownInput();
-                context.countRequestBytes(query.getBytes(StandardCharsets.UTF_8).length);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(toClient.getInputStream()));
+            String line = reader.readLine();
+            while (!line.equals("")){
+                query += line;
+                query += "\r\n";
+                line = reader.readLine();
+            }
+            query += "\r\n";
+            toClient.shutdownInput();
+            context.countRequestBytes(query.getBytes(StandardCharsets.UTF_8).length);
         } catch (IOException e) {
             log.error("ERROR: Invalid request from Client");
         }
@@ -39,12 +45,15 @@ public class RequestThread implements Runnable{
     }
 
     public void queryToTargetServer(String query) {
-        String request = "GET /" + query + " HTTP/1.1\r\n" +
-                    "Host: " + toTargetServer.getInetAddress().getHostName() + "\r\n\r\n";
-        context.countRequestBytes(request.getBytes().length);
+        //todo сделать rest запрос со стороны клиента
+//        String request = "GET /" + query + " HTTP/1.1" + "\r\n" +
+//                    "Host: " + toTargetServer.getInetAddress().getHostName() + "\r\n\r\n";
+//        System.out.println(request);
+        context.countRequestBytes(query.getBytes().length);
         try {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toTargetServer.getOutputStream()));
-            writer.write(request);
+            writer.write(query);
+            writer.newLine();
             writer.flush();
             toTargetServer.shutdownOutput();
         } catch (IOException e) {
