@@ -1,2 +1,4 @@
-package portMapperComands.service;public class Command {
+package portMapperCommands;
+
+public class Command {
 }

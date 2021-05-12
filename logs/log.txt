@@ -1,0 +1,25 @@
+2021-05-04 18:39:50 ERROR RequestThread:42 - ERROR: Invalid request from Client
+2021-05-04 18:39:50 INFO  SocketThreadPair:91 - Client: /127.0.0.1| Server: localhost/127.0.0.1 Connection close
+2021-05-04 18:41:33 ERROR RequestThread:42 - ERROR: Invalid request from Client
+2021-05-04 18:41:33 INFO  SocketThreadPair:91 - Client: /127.0.0.1| Server: localhost/127.0.0.1 Connection close
+2021-05-04 18:44:33 ERROR RequestThread:42 - ERROR: Invalid request from Client
+2021-05-04 18:44:33 INFO  SocketThreadPair:93 - Client: /127.0.0.1| Server: localhost/127.0.0.1 Connection close
+2021-05-04 18:47:18 ERROR SocketThreadPair:68 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-04 18:47:18 ERROR RequestThread:42 - ERROR: Invalid request from Client
+2021-05-04 18:47:18 ERROR ResponseThread:53 - ERROR: Couldn't send response to client
+2021-05-04 18:47:18 INFO  SocketThreadPair:93 - Client: /127.0.0.1| Server: localhost/127.0.0.1 Connection close
+2021-05-04 18:55:03 INFO  SocketThreadPair:86 - Client: /127.0.0.1| Server: localhost/127.0.0.1 Connection close
+2021-05-04 18:56:48 INFO  SocketThreadPair:86 - Client: /127.0.0.1| Server: localhost/127.0.0.1 Connection close
+2021-05-04 19:06:40 INFO  SocketThreadPair:87 - Client: /127.0.0.1| Server: localhost/127.0.0.1 Connection close
+2021-05-04 19:09:10 ERROR ResponseThread:53 - ERROR: Couldn't send response to client
+2021-05-04 19:09:10 INFO  SocketThreadPair:88 - Client: /127.0.0.1| Server: localhost/127.0.0.1 Connection close
+2021-05-04 19:18:07 ERROR RequestThread:42 - ERROR: Invalid request from Client
+2021-05-04 19:18:07 ERROR RequestThread:60 - ERROR: Invalid GET request to Target Server
+2021-05-04 19:18:07 ERROR ResponseThread:38 - ERROR: Couldn't get a response from the target server
+2021-05-04 19:18:07 ERROR ResponseThread:53 - ERROR: Couldn't send response to client
+2021-05-09 14:28:27 ERROR SocketTransmitter:60 - ERROR on /127.0.0.1: Invalid UUID
+2021-05-09 14:29:02 ERROR RequestThread:43 - ERROR: Invalid request from Client
+2021-05-12 22:45:32 ERROR SocketTransmitter:60 - ERROR on /127.0.0.1: Invalid UUID
+2021-05-12 22:51:08 ERROR SocketThreadPair:66 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-12 22:51:08 ERROR RequestThread:42 - ERROR: Invalid request from Client
+2021-05-12 22:51:08 ERROR ResponseThread:53 - ERROR: Couldn't send response to client

@@ -17,40 +17,21 @@ public class SocketThreadPair implements Runnable{
 
     private static final Logger log = Logger.getLogger(SocketThreadPair.class);
 
-//    private RequestThread request;
-//    private ResponseThread response;
     private final Socket toClient;
     private final Socket toTargetServer;
     private Context context;
-//    private Queue<RequestThread> requestQueue = new PriorityQueue<>();
 
     public SocketThreadPair(Socket toClient, Socket toTargetServer) {
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
         this.context = new Context();
-//        this.response = new ResponseThread(toClient, toTargetServer, context);
     }
 
-//    public RequestThread getRequest() {
-//        return request;
-//    }
-//
-//    public void setRequest(RequestThread request) {
-//        this.request = request;
-//    }
-//
-//    public ResponseThread getResponse() {
-//        return response;
-//    }
-//
-//    public void setResponse(ResponseThread response) {
-//        this.response = response;
-//    }
-
     private void close() {
-        //response.sentResponseToClient("No request has been received from you within 20 seconds"); //стоит ли так делать?
         try {
             toClient.close();
+            toTargetServer.close();
+            context.setThreadPairIsFinished(true);
         } catch (IOException e) {
             log.error("ERROR : Error when closing connection");
         }
@@ -58,7 +39,6 @@ public class SocketThreadPair implements Runnable{
 
     private void requestSubmit(){
         RequestThread request = new RequestThread(toClient, toTargetServer, context);
-//        requestQueue.add(request);
         Future<?> requestFuture = PoolThreads.INSTANCE.executor.submit(request);
         try {
             requestFuture.get(60, TimeUnit.SECONDS);
@@ -74,6 +54,7 @@ public class SocketThreadPair implements Runnable{
         try {
             responseFuture.get(60, TimeUnit.SECONDS);
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
+            response.sentResponseToClient("Timeout expired");
             log.error("ERROR on " + toClient.getInetAddress() + " : The timeout for a response from the target server has expired ");
             close();
         }
@@ -82,12 +63,10 @@ public class SocketThreadPair implements Runnable{
     @Override
     public void run() {
         context.setStartSession();
-        //todo solve infinite loop problem
-//        while (toClient.isConnected()) {
             requestSubmit();
             responseSubmit();
-//        }
         context.setStopSession();
+        close();
         System.out.println(context.toString());
     }
 }

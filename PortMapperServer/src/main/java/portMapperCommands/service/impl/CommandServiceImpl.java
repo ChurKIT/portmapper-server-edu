@@ -1,2 +1,4 @@
-package portMapperCommands.service.impl;public class CommandServiceImpl {
+package portMapperCommands.service.impl;
+
+public class CommandServiceImpl {
 }

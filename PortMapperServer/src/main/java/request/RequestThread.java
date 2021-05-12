@@ -45,10 +45,6 @@ public class RequestThread implements Runnable{
     }
 
     public void queryToTargetServer(String query) {
-        //todo сделать rest запрос со стороны клиента
-//        String request = "GET /" + query + " HTTP/1.1" + "\r\n" +
-//                    "Host: " + toTargetServer.getInetAddress().getHostName() + "\r\n\r\n";
-//        System.out.println(request);
         context.countRequestBytes(query.getBytes().length);
         try {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(toTargetServer.getOutputStream()));
@@ -61,15 +57,10 @@ public class RequestThread implements Runnable{
         }
     }
 
-    public boolean isDone() {
-        return isDone;
-    }
-
     @Override
     public void run() {
         String request = queryFromClient();
         queryToTargetServer(request);
-        isDone = true;
     }
 
 }

@@ -39,6 +39,7 @@ public class SocketTransmitter {
             Properties properties = new Properties();
             properties.load(fis);
             listeningPort = Integer.parseInt(properties.getProperty("listen.port"));
+            fis.close();
         } catch (IOException e) {
             log.error("ERROR: Property file not found or corrupted.");
             throw new RuntimeException();
@@ -98,24 +99,5 @@ public class SocketTransmitter {
             log.error("ERROR on " + toClient.getInetAddress() + ": Unable to connect to server with this port");
         }
             return socket;
-
-
-//        try {
-//            toTargetServer = (HttpURLConnection) new URL("http://localhost:" + port).openConnection();
-//            toTargetServer.setRequestMethod("GET");
-//            toTargetServer.setUseCaches(false);
-//            return toTargetServer;
-//        } catch (IOException e){
-//            throw new RuntimeException("ERROR: Couldn't to connect to server");
-//        }
-//        String url = "http://localhost:" + port + "/";
-//        HttpURLConnection connection = null;
-//        try {
-//            connection = (HttpURLConnection) new URL(url).openConnection();
-//            return connection;
-//        } catch (IOException e) {
-//            log.error("ERROR: Can't connect to target server on port " + port);
-//            throw new RuntimeException("ERROR: Can't connect to target server on port " + port);
-//        }
     }
 }

@@ -8,12 +8,10 @@ The essence of the project is to write a PortMapper server that will redirect re
 
     2.PortMapperRun.java (port 6666 changes in properties)
 
-    3.Run.java 
-
-Write UUID Target Server
-
-28748480-e5ea-4479-ba13-9f346772644d //it's 8080 port
+    3.Run.java
 
 Write query to Target Server
 
-//write "home" or " "
+GET /home HTTP/1.1
+Host: localhost
+DONE

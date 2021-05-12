@@ -9,7 +9,7 @@ public class ConnectServiceImpl implements ConnectService {
 
     private static Socket clientSocket;
     private static BufferedReader reader;
-    private String uuidToTargetServer;
+    private String uuidToTargetServer = "28748480-e5ea-4479-ba13-9f346772644d";
     private String queryToTargetServer;
     private String request;
     private BufferedReader in;
@@ -31,8 +31,8 @@ public class ConnectServiceImpl implements ConnectService {
     @Override
     public void mapTo() {
         try {
-            System.out.println("Write UUID Target Server");
-            uuidToTargetServer = reader.readLine();
+//            System.out.println("Write UUID Target Server");
+//            uuidToTargetServer = reader.readLine();
             out.write(uuidToTargetServer);
             out.newLine();
             out.flush();
@@ -54,7 +54,6 @@ public class ConnectServiceImpl implements ConnectService {
                      queryToTargetServer += "\r\n";
                      line = reader.readLine();
                  }
-                 isDone = true;
                  out.write(queryToTargetServer);
                  out.newLine();
                  out.flush();
