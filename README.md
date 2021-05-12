@@ -12,6 +12,6 @@ The essence of the project is to write a PortMapper server that will redirect re
 
 Write query to Target Server
 
-GET /home HTTP/1.1
-Host: localhost
-DONE
+    GET /home HTTP/1.1
+    Host: localhost
+    DONE
