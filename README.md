@@ -15,3 +15,9 @@ Write query to Target Server
     GET /home HTTP/1.1
     Host: localhost
     DONE
+
+Console commands to PortMapper:
+
+    history - shows the history of requests and responses through PortMapper 
+
+    clients - shows active connected clients
