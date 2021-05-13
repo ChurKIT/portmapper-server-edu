@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.util.Properties;
 import java.util.UUID;
 
-public class SocketTransmitter {
+public class SocketTransmitter implements Runnable{
 
     private static final Logger log = Logger.getLogger(SocketTransmitter.class);
 
@@ -27,7 +27,7 @@ public class SocketTransmitter {
         getProperties();
         try {
             serverSocket = new ServerSocket(listeningPort, 10, InetAddress.getByName("localhost"));
-            socketService = new SocketServiceImpl();
+            socketService = SocketServiceImpl.getInstance();
         } catch (IOException t) {
             t.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class SocketTransmitter {
 
     public void run() {
         while (!serverSocket.isClosed()) {
-            System.out.println("Server listening: " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
+//            System.out.println("Server listening: " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
             toClient = connectionFromClient(serverSocket);
             try {
                 String targetServerUUID = getUUIDFromClient(toClient);
@@ -69,14 +69,14 @@ public class SocketTransmitter {
     }
 
     public Socket connectionFromClient(ServerSocket serverSocket) {
-        System.out.println("Waiting for connect...");
+//        System.out.println("Waiting for connect...");
         Socket result = null;
         try {
             result = serverSocket.accept();
         } catch (IOException e) {
             log.error("ERROR : Failed to create client connection");
         }
-        System.out.println("Connect to " + result.getInetAddress());
+//        System.out.println("Connect to " + result.getInetAddress());
         return result;
     }
 

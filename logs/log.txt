@@ -23,3 +23,6 @@
 2021-05-12 22:51:08 ERROR SocketThreadPair:66 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
 2021-05-12 22:51:08 ERROR RequestThread:42 - ERROR: Invalid request from Client
 2021-05-12 22:51:08 ERROR ResponseThread:53 - ERROR: Couldn't send response to client
+2021-05-13 14:05:25 ERROR SocketTransmitter:58 - ERROR on /127.0.0.1: Nothing entered when prompted for UUID
+2021-05-13 14:09:02 ERROR SocketTransmitter:58 - ERROR on /127.0.0.1: Nothing entered when prompted for UUID
+2021-05-13 14:11:58 ERROR SocketTransmitter:58 - ERROR on /127.0.0.1: Nothing entered when prompted for UUID

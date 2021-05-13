@@ -2,6 +2,7 @@ package context;
 
 public class Context {
 
+    private String clientAddress;
     private boolean threadPairIsFinished;
     private int requestBytes = 0;
     private int responseBytes = 0;
@@ -61,10 +62,19 @@ public class Context {
 
     }
 
+    public void setClientAddress(String clientAddress) {
+        this.clientAddress = clientAddress;
+    }
+
+    public String getClientAddress() {
+        return clientAddress;
+    }
+
     @Override
     public String toString() {
         return "Context{" +
-                "threadPairIsFinished=" + threadPairIsFinished +
+                "clientAddress='" + clientAddress + '\'' +
+                ", threadPairIsFinished=" + threadPairIsFinished +
                 ", requestBytes=" + requestBytes +
                 ", responseBytes=" + responseBytes +
                 ", startSession=" + startSession +

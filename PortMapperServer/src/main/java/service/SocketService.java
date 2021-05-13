@@ -1,10 +1,9 @@
 package service;
 
+import context.Context;
 import socketThreadPair.SocketThreadPair;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.util.List;
 import java.util.UUID;
 
 public interface SocketService {
@@ -18,5 +17,9 @@ public interface SocketService {
     String getUUIDFromClient(String request);
 
     void addSocketThreadPairToList(SocketThreadPair threadPair);
+
+    List<Context> getAllContexts();
+
+    List<Context> getAllActiveContexts();
 
 }

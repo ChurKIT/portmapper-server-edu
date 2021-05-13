@@ -27,6 +27,10 @@ public class SocketThreadPair implements Runnable{
         this.context = new Context();
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     private void close() {
         try {
             toClient.close();
@@ -62,11 +66,11 @@ public class SocketThreadPair implements Runnable{
 
     @Override
     public void run() {
+        context.setClientAddress(toClient.getInetAddress().toString());
         context.setStartSession();
             requestSubmit();
             responseSubmit();
         context.setStopSession();
         close();
-        System.out.println(context.toString());
     }
 }

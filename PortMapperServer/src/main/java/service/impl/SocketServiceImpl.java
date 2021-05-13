@@ -1,5 +1,6 @@
 package service.impl;
 
+import context.Context;
 import org.apache.log4j.Logger;
 import service.SocketService;
 import socketThreadPair.SocketThreadPair;
@@ -11,15 +12,28 @@ import java.util.stream.Collectors;
 
 public class SocketServiceImpl implements SocketService {
 
+    private volatile static SocketServiceImpl instance;
+
+    private SocketServiceImpl() {
+        initMap();
+    }
+
+    public static SocketServiceImpl getInstance() {
+        if (instance == null){
+            synchronized (SocketServiceImpl.class) {
+                if (instance == null) {
+                    instance = new SocketServiceImpl();
+                }
+            }
+        }
+        return instance;
+    }
+
     private static final Logger log = Logger.getLogger(SocketServiceImpl.class);
 
     private Map<UUID, Integer> uuidToPortMap = new HashMap<>();
 
-    private List<SocketThreadPair> threadPairs = new ArrayList<>();
-
-    public SocketServiceImpl() {
-        initMap();
-    }
+    private volatile List<SocketThreadPair> threadPairs = new ArrayList<>();
 
     @Override
     public synchronized Integer getPort(UUID uuid){
@@ -48,11 +62,6 @@ public class SocketServiceImpl implements SocketService {
             log.error("ERROR : Invalid initialization port:uuid map");
             throw new RuntimeException(e);
         }
-//        uuidToPortMap.put(UUID.fromString("28748480-e5ea-4479-ba13-9f346772644d"), 8080);
-//        uuidToPortMap.put(UUID.fromString("0c2a0553-dd70-4a38-85f9-115b9830df30"), 9090);
-//        uuidToPortMap.put(UUID.fromString("f1fa4e69-2313-4513-a96a-55caf206f86e"), 7070);
-//        uuidToPortMap.put(UUID.fromString("fcacd0b9-e4c1-40c7-9c8d-67bf356d5134"), 5464);
-//        uuidToPortMap.put(UUID.fromString("06dcc836-6c3f-4b28-ba2a-4259100d8d79"), 4565);
     }
 
 
@@ -73,7 +82,24 @@ public class SocketServiceImpl implements SocketService {
         return splitRequest[1];
     }
 
+    @Override
+    public List<Context> getAllContexts() {
+        List<Context> result = new ArrayList<>();
+        for (SocketThreadPair socketThreadPair : threadPairs){
+            result.add(socketThreadPair.getContext());
+        }
+        return result;
+    }
 
-
-
+    @Override
+    public List<Context> getAllActiveContexts() {
+        List<Context> result = new ArrayList<>();
+        for (SocketThreadPair socketThreadPair : threadPairs){
+            Context context = socketThreadPair.getContext();
+            if (!context.isThreadPairIsFinished()) {
+                result.add(context);
+            }
+        }
+        return result;
+    }
 }
