@@ -20,4 +20,6 @@ Console commands to PortMapper:
 
     history - shows the history of requests and responses through PortMapper 
 
-    clients - shows active connected clients
+    clients - shows all clients
+
+    messages - shows all messages
