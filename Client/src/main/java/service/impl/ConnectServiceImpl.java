@@ -65,10 +65,6 @@ public class ConnectServiceImpl implements ConnectService {
          }
     }
 
-    public void sendRequest(){
-
-    }
-
     @Override
     public String readResponse() {
         try {

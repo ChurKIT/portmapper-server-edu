@@ -1,6 +1,9 @@
 package socketThreadPair;
 
+import context.ClientInfo;
 import context.Context;
+import context.Message;
+import context.dbservice.impl.ClientInfoDAOImpl;
 import org.apache.log4j.Logger;
 import poolThreads.PoolThreads;
 import request.RequestThread;
@@ -19,30 +22,35 @@ public class SocketThreadPair implements Runnable{
 
     private final Socket toClient;
     private final Socket toTargetServer;
-    private Context context;
+    private ClientInfo clientInfo;
+    private ClientInfoDAOImpl clientInfoDAO;
 
     public SocketThreadPair(Socket toClient, Socket toTargetServer) {
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
-        this.context = new Context();
+        this.clientInfo = new ClientInfo();
+        clientInfo.setContext(new Context());
+        clientInfo.getContext().setMessage(new Message());
+        this.clientInfoDAO = new ClientInfoDAOImpl();
     }
 
-    public Context getContext() {
-        return context;
+    public ClientInfo getClientInfo() {
+        return clientInfo;
     }
 
     private void close() {
         try {
             toClient.close();
             toTargetServer.close();
-            context.setThreadPairIsFinished(true);
+//            clientInfo.getContext().setThreadPairIsFinished(true);
+            clientInfoDAO.save(clientInfo);
         } catch (IOException e) {
             log.error("ERROR : Error when closing connection");
         }
     }
 
     private void requestSubmit(){
-        RequestThread request = new RequestThread(toClient, toTargetServer, context);
+        RequestThread request = new RequestThread(toClient, toTargetServer, clientInfo.getContext());
         Future<?> requestFuture = PoolThreads.INSTANCE.executor.submit(request);
         try {
             requestFuture.get(60, TimeUnit.SECONDS);
@@ -53,7 +61,7 @@ public class SocketThreadPair implements Runnable{
     }
 
     private void responseSubmit(){
-        ResponseThread response = new ResponseThread(toClient, toTargetServer, context);
+        ResponseThread response = new ResponseThread(toClient, toTargetServer, clientInfo.getContext());
         Future<?> responseFuture = PoolThreads.INSTANCE.executor.submit(response);
         try {
             responseFuture.get(60, TimeUnit.SECONDS);
@@ -66,11 +74,12 @@ public class SocketThreadPair implements Runnable{
 
     @Override
     public void run() {
-        context.setClientAddress(toClient.getInetAddress().toString());
-        context.setStartSession();
+        clientInfo.getContext().setClientAddress(toClient.getInetAddress().toString());
+        clientInfo.setClientAddress(toClient.getInetAddress().toString());
+        clientInfo.getContext().initStartSession();
             requestSubmit();
             responseSubmit();
-        context.setStopSession();
+        clientInfo.getContext().initStopSession();
         close();
     }
 }

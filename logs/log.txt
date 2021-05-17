@@ -26,3 +26,121 @@
 2021-05-13 14:05:25 ERROR SocketTransmitter:58 - ERROR on /127.0.0.1: Nothing entered when prompted for UUID
 2021-05-13 14:09:02 ERROR SocketTransmitter:58 - ERROR on /127.0.0.1: Nothing entered when prompted for UUID
 2021-05-13 14:11:58 ERROR SocketTransmitter:58 - ERROR on /127.0.0.1: Nothing entered when prompted for UUID
+2021-05-15 11:36:25 ERROR SocketThreadPair:50 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-15 11:36:25 ERROR ResponseThread:38 - ERROR: Couldn't get a response from the target server
+2021-05-15 11:36:25 ERROR RequestThread:42 - ERROR: Invalid request from Client
+2021-05-15 11:36:25 ERROR ResponseThread:53 - ERROR: Couldn't send response to client
+2021-05-15 11:36:25 ERROR RequestThread:56 - ERROR: Invalid GET request to Target Server
+2021-05-16 21:40:05 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 21:40:28 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 21:40:54 ERROR ClientInfoDAOImpl:136 - ERROR: Unable to get clientInfo from database
+2021-05-16 21:41:28 ERROR SocketThreadPair:56 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 21:41:28 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 21:41:28 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 21:41:28 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 21:45:00 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 21:45:18 ERROR ClientInfoDAOImpl:88 - ERROR: Unable to add context to database
+2021-05-16 21:46:18 ERROR SocketThreadPair:56 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 21:46:18 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 21:46:18 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 21:46:18 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 21:48:13 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 21:48:44 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 21:52:16 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 21:53:11 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 21:54:59 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 21:55:18 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 21:56:29 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 21:59:56 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 22:00:15 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 22:02:56 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 22:10:50 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 22:10:57 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 22:10:57 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 22:10:57 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 22:11:07 ERROR ClientInfoDAOImpl:52 - ERROR: DB connection not established
+2021-05-16 22:13:26 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:13:45 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:16:51 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:18:43 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:18:43 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 22:18:43 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 22:18:43 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 22:18:43 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:25:36 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:26:50 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:27:50 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 22:27:50 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 22:27:50 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 22:27:50 ERROR ResponseThread:37 - ERROR: Couldn't get a response from the target server
+2021-05-16 22:27:50 ERROR ResponseThread:52 - ERROR: Couldn't send response to client
+2021-05-16 22:29:39 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:32:06 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 22:32:06 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 22:32:06 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 22:35:48 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:35:48 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 22:35:48 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 22:35:48 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 22:53:33 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 22:53:33 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:53:34 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 22:53:34 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 22:54:25 ERROR ClientInfoDAOImpl:75 - ERROR: Unable to add message to database
+2021-05-16 22:56:10 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 22:56:10 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 22:56:10 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 22:56:10 ERROR ResponseThread:37 - ERROR: Couldn't get a response from the target server
+2021-05-16 22:56:10 ERROR ResponseThread:52 - ERROR: Couldn't send response to client
+2021-05-16 23:01:15 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 23:01:49 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 23:01:49 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 23:01:49 ERROR ResponseThread:37 - ERROR: Couldn't get a response from the target server
+2021-05-16 23:01:49 ERROR ResponseThread:52 - ERROR: Couldn't send response to client
+2021-05-16 23:42:05 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-16 23:42:23 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-16 23:43:04 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 23:43:04 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-16 23:53:25 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-16 23:53:25 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-16 23:53:25 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-16 23:53:25 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-16 23:54:28 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-16 23:59:10 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-16 23:59:29 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 09:53:45 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 09:53:45 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-17 09:53:45 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-17 09:53:45 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-17 09:57:44 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 10:18:01 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 10:20:38 ERROR ClientInfoDAOImpl:53 - ERROR: DB connection not established
+2021-05-17 10:21:49 ERROR ClientInfoDAOImpl:53 - ERROR: DB connection not established
+2021-05-17 10:26:36 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 10:26:36 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-17 10:26:36 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-17 10:26:36 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-17 10:29:00 ERROR ClientInfoDAOImpl:90 - ERROR: Unable to add context to database
+2021-05-17 10:29:00 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-17 10:32:02 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 10:32:02 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-17 10:32:02 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-17 10:35:24 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 10:37:45 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-17 10:37:52 ERROR ClientInfoDAOImpl:90 - ERROR: Unable to add context to database
+2021-05-17 10:37:52 ERROR RequestThread:41 - ERROR: Invalid request from Client
+2021-05-17 10:37:52 ERROR RequestThread:55 - ERROR: Invalid GET request to Target Server
+2021-05-17 10:50:22 ERROR ClientInfoDAOImpl:90 - ERROR: Unable to add context to database
+2021-05-17 10:53:34 ERROR ClientInfoDAOImpl:90 - ERROR: Unable to add context to database
+2021-05-17 10:56:09 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 10:57:52 ERROR ClientInfoDAOImpl:90 - ERROR: Unable to add context to database
+2021-05-17 11:02:06 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-17 11:02:06 ERROR ResponseThread:37 - ERROR: Couldn't get a response from the target server
+2021-05-17 11:02:06 ERROR ResponseThread:52 - ERROR: Couldn't send response to client
+2021-05-17 11:02:06 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database
+2021-05-17 11:14:14 ERROR ClientInfoDAOImpl:138 - ERROR: Unable to get clientInfo from database
+2021-05-17 11:14:22 ERROR ClientInfoDAOImpl:138 - ERROR: Unable to get clientInfo from database
+2021-05-17 11:17:10 ERROR SocketThreadPair:58 - ERROR on /127.0.0.1 : The timeout for a request from the client has expired 
+2021-05-17 11:17:10 ERROR ResponseThread:37 - ERROR: Couldn't get a response from the target server
+2021-05-17 11:17:10 ERROR ResponseThread:52 - ERROR: Couldn't send response to client
+2021-05-17 11:17:10 ERROR ClientInfoDAOImpl:76 - ERROR: Unable to add message to database

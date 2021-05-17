@@ -86,7 +86,7 @@ public class SocketServiceImpl implements SocketService {
     public List<Context> getAllContexts() {
         List<Context> result = new ArrayList<>();
         for (SocketThreadPair socketThreadPair : threadPairs){
-            result.add(socketThreadPair.getContext());
+            result.add(socketThreadPair.getClientInfo().getContext());
         }
         return result;
     }
@@ -95,7 +95,7 @@ public class SocketServiceImpl implements SocketService {
     public List<Context> getAllActiveContexts() {
         List<Context> result = new ArrayList<>();
         for (SocketThreadPair socketThreadPair : threadPairs){
-            Context context = socketThreadPair.getContext();
+            Context context = socketThreadPair.getClientInfo().getContext();
             if (!context.isThreadPairIsFinished()) {
                 result.add(context);
             }

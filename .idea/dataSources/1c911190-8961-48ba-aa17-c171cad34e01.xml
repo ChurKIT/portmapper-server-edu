@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="db">
+  <database-model serializer="dbm" dbms="HSQLDB" family-id="HSQLDB" format-version="4.21">
+    <root id="1">
+      <ServerVersion>2.4.0</ServerVersion>
+    </root>
+    <database id="2" parent="1" name="PUBLIC">
+      <Current>1</Current>
+    </database>
+    <schema id="3" parent="2" name="INFORMATION_SCHEMA"/>
+    <schema id="4" parent="2" name="PUBLIC">
+      <Current>1</Current>
+    </schema>
+    <schema id="5" parent="2" name="SYSTEM_LOBS"/>
+    <table id="6" parent="4" name="CLIENTS"/>
+    <table id="7" parent="4" name="CONTEXTS"/>
+    <table id="8" parent="4" name="MESSAGES"/>
+    <column id="9" parent="6" name="ID">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="10" parent="6" name="CLIENTADDRESS">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="11" parent="6" name="CONTEXT_ID">
+      <Position>3</Position>
+      <DataType>INTEGER|4s</DataType>
+    </column>
+    <index id="12" parent="6" name="SYS_IDX_SYS_PK_10103_10105">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="13" parent="6" name="SYS_IDX_SYS_FK_10104_10107">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>CONTEXT_ID</ColNames>
+    </index>
+    <key id="14" parent="6" name="SYS_PK_10103">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="15" parent="6" name="SYS_FK_10104">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>CONTEXT_ID</ColNames>
+      <RefTableName>CONTEXTS</RefTableName>
+      <RefKeyName>SYS_PK_10096</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="16" parent="7" name="ID">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="17" parent="7" name="REQUESTBYTES">
+      <Position>2</Position>
+      <DataType>INTEGER|4s</DataType>
+    </column>
+    <column id="18" parent="7" name="RESPONSEBYTES">
+      <Position>3</Position>
+      <DataType>INTEGER|4s</DataType>
+    </column>
+    <column id="19" parent="7" name="STARTSESSION">
+      <Position>4</Position>
+      <DataType>DATE|91s</DataType>
+    </column>
+    <column id="20" parent="7" name="STOPSESSION">
+      <Position>5</Position>
+      <DataType>DATE|91s</DataType>
+    </column>
+    <column id="21" parent="7" name="WORKTIME">
+      <Position>6</Position>
+      <DataType>TIME|92s</DataType>
+    </column>
+    <column id="22" parent="7" name="MESSAGE_ID">
+      <Position>7</Position>
+      <DataType>INTEGER|4s</DataType>
+    </column>
+    <index id="23" parent="7" name="SYS_IDX_SYS_PK_10096_10098">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="24" parent="7" name="SYS_IDX_SYS_FK_10097_10100">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>MESSAGE_ID</ColNames>
+    </index>
+    <key id="25" parent="7" name="SYS_PK_10096">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="26" parent="7" name="SYS_FK_10097">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>MESSAGE_ID</ColNames>
+      <RefTableName>MESSAGES</RefTableName>
+      <RefKeyName>SYS_PK_10092</RefKeyName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="27" parent="8" name="ID">
+      <Position>1</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="28" parent="8" name="REQUEST">
+      <Position>2</Position>
+      <DataType>VARCHAR(255)|12s</DataType>
+    </column>
+    <column id="29" parent="8" name="RESPONSE">
+      <Position>3</Position>
+      <DataType>VARCHAR(16777216)|12s</DataType>
+    </column>
+    <index id="30" parent="8" name="SYS_IDX_SYS_PK_10092_10093">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="31" parent="8" name="SYS_PK_10092">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

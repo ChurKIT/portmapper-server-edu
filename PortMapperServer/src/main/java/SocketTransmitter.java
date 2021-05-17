@@ -1,3 +1,7 @@
+import context.ClientInfo;
+import context.Context;
+import context.Message;
+import context.dbservice.impl.ClientInfoDAOImpl;
 import org.apache.log4j.Logger;
 import poolThreads.PoolThreads;
 import service.impl.SocketServiceImpl;
@@ -12,6 +16,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SocketTransmitter implements Runnable{
 
@@ -47,8 +52,12 @@ public class SocketTransmitter implements Runnable{
     }
 
     public void run() {
+        ClientInfoDAOImpl clientInfoDAO = new ClientInfoDAOImpl();
+        int index = clientInfoDAO.lastIndex() - 1;
+        ClientInfo.id_generator = new AtomicInteger(index);
+        Context.id_generator = new AtomicInteger(index);
+        Message.id_generator = new AtomicInteger(index);
         while (!serverSocket.isClosed()) {
-//            System.out.println("Server listening: " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
             toClient = connectionFromClient(serverSocket);
             try {
                 String targetServerUUID = getUUIDFromClient(toClient);
@@ -56,10 +65,10 @@ public class SocketTransmitter implements Runnable{
                 toTargetServer = connectToTargetServer(targetServerPort);
             } catch (NullPointerException e ){
                 log.error("ERROR on " + toClient.getInetAddress() +  ": Nothing entered when prompted for UUID");
-                continue; //затычка
+                continue;
             } catch (IllegalArgumentException e){
                 log.error("ERROR on " + toClient.getInetAddress() + ": Invalid UUID");
-                continue; //затычка
+                continue;
             }
 
             SocketThreadPair socketThreadPair = new SocketThreadPair(toClient, toTargetServer);
@@ -69,14 +78,12 @@ public class SocketTransmitter implements Runnable{
     }
 
     public Socket connectionFromClient(ServerSocket serverSocket) {
-//        System.out.println("Waiting for connect...");
         Socket result = null;
         try {
             result = serverSocket.accept();
         } catch (IOException e) {
             log.error("ERROR : Failed to create client connection");
         }
-//        System.out.println("Connect to " + result.getInetAddress());
         return result;
     }
 

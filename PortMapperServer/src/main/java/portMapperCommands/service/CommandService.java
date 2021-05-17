@@ -1,14 +1,15 @@
 package portMapperCommands.service;
 
-import context.Context;
+import context.ClientInfo;
+import context.Message;
 
 import java.util.List;
 
 public interface CommandService {
 
-    List<Context> getAllTransmitterHistory();
+    List<ClientInfo> getAllTransmitterHistory();
 
     List<String> getAllActiveClientsAddresses();
 
-
+    List<Message> getAllMessages();
 }

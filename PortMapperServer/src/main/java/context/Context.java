@@ -1,14 +1,24 @@
 package context;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Context {
 
+    public static transient AtomicInteger id_generator = new AtomicInteger(0);
+
+    private int id;
     private String clientAddress;
     private boolean threadPairIsFinished;
     private int requestBytes = 0;
     private int responseBytes = 0;
     private long startSession;
     private long stopSession;
-    private long workTime;
+    private int workTime;
+    private Message message;
+
+    public Context() {
+        this.id = id_generator.addAndGet(1);
+    }
 
     public boolean isThreadPairIsFinished() {
         return threadPairIsFinished;
@@ -16,6 +26,30 @@ public class Context {
 
     public void setThreadPairIsFinished(boolean threadPairIsFinished) {
         this.threadPairIsFinished = threadPairIsFinished;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getRequest() {
+        return message.getRequest();
+    }
+
+    public void setRequest(String request) {
+       message.setRequest(request);
+    }
+
+    public String getResponse() {
+        return message.getResponse();
+    }
+
+    public void setResponse(String response) {
+        message.setResponse(response);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getRequestBytes() {
@@ -30,7 +64,7 @@ public class Context {
         return startSession;
     }
 
-    public void setStartSession() {
+    public void initStartSession() {
 
         this.startSession = System.currentTimeMillis();
     }
@@ -39,17 +73,17 @@ public class Context {
         return stopSession;
     }
 
-    public void setStopSession() {
+    public void initStopSession() {
         this.stopSession = System.currentTimeMillis();
-        setWorkTime();
+        initWorkTime();
     }
 
-    public long getWorkTime() {
+    public int getWorkTime() {
         return workTime;
     }
 
-    public void setWorkTime() {
-        this.workTime = stopSession - startSession;
+    public void initWorkTime() {
+        this.workTime = (int) (stopSession - startSession);
     }
 
     public void countRequestBytes(int bytes){
@@ -70,11 +104,43 @@ public class Context {
         return clientAddress;
     }
 
+    public void setRequestBytes(int requestBytes) {
+        this.requestBytes = requestBytes;
+    }
+
+    public void setResponseBytes(int responseBytes) {
+        this.responseBytes = responseBytes;
+    }
+
+    public void setStartSession(long startSession) {
+        this.startSession = startSession;
+    }
+
+    public void setStopSession(long stopSession) {
+        this.stopSession = stopSession;
+    }
+
+    public void initWorkTime(int workTime) {
+        this.workTime = workTime;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setWorkTime(int workTime) {
+        this.workTime = workTime;
+    }
+
     @Override
     public String toString() {
         return "Context{" +
-                "clientAddress='" + clientAddress + '\'' +
-                ", threadPairIsFinished=" + threadPairIsFinished +
+//                "clientAddress='" + clientAddress + '\'' +
+//                ", threadPairIsFinished=" + threadPairIsFinished +
                 ", requestBytes=" + requestBytes +
                 ", responseBytes=" + responseBytes +
                 ", startSession=" + startSession +

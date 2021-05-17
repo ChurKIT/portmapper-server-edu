@@ -13,7 +13,6 @@ public class RequestThread implements Runnable{
 
     private final Socket toClient;
     private final Socket toTargetServer;
-    private boolean isDone;
     private Context context;
 
 
@@ -21,7 +20,6 @@ public class RequestThread implements Runnable{
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
         this.context = context;
-        isDone = false;
     }
 
 
@@ -38,6 +36,7 @@ public class RequestThread implements Runnable{
             query += "\r\n";
             toClient.shutdownInput();
             context.countRequestBytes(query.getBytes(StandardCharsets.UTF_8).length);
+            context.setRequest(query);
         } catch (IOException e) {
             log.error("ERROR: Invalid request from Client");
         }

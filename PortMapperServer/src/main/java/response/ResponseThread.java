@@ -13,14 +13,12 @@ public class ResponseThread implements Runnable {
 
     private final Socket toClient;
     private final Socket toTargetServer;
-    private boolean isDone;
     private Context context;
 
     public ResponseThread(Socket toClient, Socket toTargetServer, Context context){
         this.toClient = toClient;
         this.toTargetServer = toTargetServer;
         this.context = context;
-        isDone = false;
     }
 
     public String responseFromTargetServer(){
@@ -34,6 +32,7 @@ public class ResponseThread implements Runnable {
             }
             toTargetServer.shutdownInput();
             context.countResponseBytes(response.getBytes(StandardCharsets.UTF_8).length);
+            context.setResponse(response);
         } catch (IOException e){
             log.error("ERROR: Couldn't get a response from the target server");
 //            throw new RuntimeException("ERROR: Couldn't get a response from the target server");
@@ -55,15 +54,11 @@ public class ResponseThread implements Runnable {
         }
     }
 
-    public boolean isDone(){
-        return isDone;
-    }
 
 
     @Override
     public void run() {
         String response = responseFromTargetServer();
         sentResponseToClient(response);
-        isDone = true;
     }
 }
